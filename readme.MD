@@ -26,6 +26,7 @@ Based on the provided input, your component should be able to hit the live OpenA
     You can properly parse data from a live API and transform it into a new data structure
     You can design a data structure with an eye to how a front-end component would consume the data to create a visual representation of the data
 
+# Submission
 Finally, because you are handing this component off to an independent user (the assessors in this case), we expect this component to be executable by a user of the application.  This is an exercise left to the author; you can build a CLI, wrap the component in a microservice with a clearly documented API, build a test harness with clear instructions on how to run it, or you can surprise us by doing something totally different!  Either way please be mindful that this is part of successfully completing the assessment; if we cannot run the code then we cannot judge the accuracy of your program.
 
 You may find information on the data structure of openaq useful for this exercise.
