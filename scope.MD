@@ -6,11 +6,13 @@ We expect this assignment to take somewhere between 3 and 8 hours to complete. Y
 Reply to the email that sent this assessment with a ZIP File containing the contents of your project.  Alternatively, you may upload your code to a public code repository with clear instructions for downloading & running your project and respond to the email with a link to your public code repository.
 Assessment Overview
 
+# Overview
 Use the OpenAQ-provided API to create a component that provides a heatmap of air quality data in your home country!
 
-Context: Much of the work performed by Opower product back-end engineering is building back-ends that create compelling and unique, data-driven insights.  We want to see what you can bring to our teams to help use data to create positive social change!  OpenAQ (https://openaq.org/) is a free resource that provides, via an OpenAPI specification (https://docs.openaq.org/#/), data points on air quality.  Using their data is a good baseline to build from, and a good representation of the kind of work you will be doing on a daily basis working with our teams.
-Detailed Instructions
+Much of the work performed by Opower product back-end engineering is building back-ends that create compelling and unique, data-driven insights.
+We want to see what you can bring to our teams to help use data to create positive social change!  OpenAQ (https://openaq.org/) is a free resource that provides, via an OpenAPI specification (https://docs.openaq.org/#/), data points on air quality.  Using their data is a good baseline to build from, and a good representation of the kind of work you will be doing on a daily basis working with our teams.
 
+# Main Task
 Build a Java component that takes input and returns a data structure that can be consumed by a front-end team to build a Heat Map visualization of air quality in the given region (This website has some good examples of geographic heatmaps).  Your component should be able to handle the following inputs:
 
     Two-letter “Country Code” and Measured Parameter (pm25, co, no2, etc.)
