@@ -57,23 +57,16 @@ class AWTExample2 {
             return input * 2;
         }
 
-        public static void junk() {
-            System.out.println("Testing");
-            int x = 2;
-            int y = return_num(x);
-            System.out.println(y);
-
-            JSONObject jo = new JSONObject();
-            jo.put("test", "jon doe");
-            try {
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                System.out.println("test");
-            }
+        public static void create_GUI() {
             // creating instance of Frame class
             AWTExample2 awt_obj = new AWTExample2();
-            // EVERYTHING ABOVE IS JUST JUNK EXPERIMENTING
+        }
 
+        public static int ping_target(int url) {
+            // ping the V2 ping endpoint and then return a valid or invalid response from it
+            //int response_code = 200;
+            //return response_code;
+            return 0;
         }
 
         public static void main(String[] args) {
@@ -97,6 +90,7 @@ class AWTExample2 {
                     Scanner sc = new Scanner(url.openStream());
                     while(sc.hasNext())
                     {
+                        //Possibly use a string builder here instead - but we may not even need this
                         results+= sc.nextLine();
                     }
 
@@ -108,8 +102,8 @@ class AWTExample2 {
                 }
 
 
-            } catch (Exception e) {
-                System.out.println(e);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
     }
