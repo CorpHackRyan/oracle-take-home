@@ -1,6 +1,8 @@
 package com.company;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.*;
@@ -51,22 +53,50 @@ class main_GUI {
 
     public class Main {
 
-        public static int return_num(int input) {
-            return input * 2;
-        }
-
-        public static void create_GUI() {
+        public static void createGUI() {
             // creating instance of Frame class
-            main_GUI awt_obj = new main_GUI();
+            main_GUI gui_obj = new main_GUI();
         }
 
-        public static int ping_target(int url) {
+        public static int pingTarget(int url) {
             // ping the V2 ping endpoint and then return a valid or invalid response from it
-            //int response_code = 200;
-            //return response_code;
+            // int response_code = 200;
+            // return response_code;
             return 0;
         }
 
+        public static String parseJSONData(String jsonList) {
+            try {
+                JSONParser parse = new JSONParser();
+                JSONObject jobJ = (JSONObject) parse.parse(jsonList);
+
+                //convert  JSON obj values into a JSON results array
+                JSONArray jsArr = (JSONArray) jobJ.get("results");
+
+                //Get data for Results array
+
+                //old way: for(int idx =0; idx < jsArr.size() ; idx++)
+                for (Object o : jsArr) {
+                    //Store the JSON objects in an array
+                    //Get the index of the JSON object and print the values as per the index
+
+                    //old way: JSONObject jsonObj_1 = (JSONObject)jsArr.get(idx); enhanced way below
+                    JSONObject jsonObj_1 = (JSONObject) o;
+
+                    System.out.println("Elements under results array");
+                    System.out.println("\nPlace id: " + jsonObj_1.get("id"));
+                    System.out.println("Types: " + jsonObj_1.get("name"));
+
+
+
+                }
+                
+            } catch (ParseException pe) {
+                pe.printStackTrace();
+            }
+
+            return "success";
+        }
         public static void main(String[] args) {
 
             try {
@@ -92,7 +122,8 @@ class main_GUI {
                         results+= sc.nextLine();
                     }
 
-                    System.out.println(results);
+                    parseJSONData(results);
+                    //System.out.println(results);
                     System.out.println("\n All JSON data returned  from " + target_url);
 
                     sc.close();
