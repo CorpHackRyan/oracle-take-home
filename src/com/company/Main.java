@@ -1,10 +1,12 @@
 package com.company;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.sound.midi.SysexMessage;
 import java.awt.*;
 import java.net.URL;
+import java.util.Scanner;
 
 // class AWTExample2 directly creates instance of Frame class
 class AWTExample2 {
@@ -77,19 +79,37 @@ class AWTExample2 {
         public static void main(String[] args) {
             // write your code here
             try {
+                String target_url = "https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/locations?limit=100" +
+                        "&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&dumpRaw=false";
+                URL url = new URL(target_url);
 
-                URL url = new URL("https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/ping");
-                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.connect();
 
-                int responsecode = conn.getResponseCode();
+                int response = conn.getResponseCode();
 
-                int rc = responsecode;
+                String results = "";
+
+                if (response != 200) {
+                    throw  new RuntimeException("HTTP Response code: " + response);
+                } else {
+                    Scanner sc = new Scanner(url.openStream());
+                    while(sc.hasNext())
+                    {
+                        results+= sc.nextLine();
+                    }
+
+                    System.out.println(results);
+                    System.out.println("\n All JSON data returned  from " + target_url);
+
+                    sc.close();
+
+                }
 
 
             } catch (Exception e) {
-                System.out.println("error");
+                System.out.println(e);
             }
         }
     }
