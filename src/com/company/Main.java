@@ -3,16 +3,15 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.sound.midi.SysexMessage;
 import java.awt.*;
 import java.net.URL;
 import java.util.Scanner;
 
-// class AWTExample2 directly creates instance of Frame class
-class AWTExample2 {
 
+class main_GUI {
+    // class AWTExample2 directly creates instance of Frame class
     // initializing using constructor
-    AWTExample2() {
+    main_GUI() {
 
         // creating a Frame
         Frame f = new Frame();
@@ -50,7 +49,6 @@ class AWTExample2 {
     }
 }
 
-
     public class Main {
 
         public static int return_num(int input) {
@@ -59,7 +57,7 @@ class AWTExample2 {
 
         public static void create_GUI() {
             // creating instance of Frame class
-            AWTExample2 awt_obj = new AWTExample2();
+            main_GUI awt_obj = new main_GUI();
         }
 
         public static int ping_target(int url) {
@@ -70,7 +68,7 @@ class AWTExample2 {
         }
 
         public static void main(String[] args) {
-            // write your code here
+
             try {
                 String target_url = "https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/locations?limit=100" +
                         "&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&dumpRaw=false";
@@ -98,9 +96,7 @@ class AWTExample2 {
                     System.out.println("\n All JSON data returned  from " + target_url);
 
                     sc.close();
-
                 }
-
 
             } catch (Exception ex) {
                 ex.printStackTrace();
