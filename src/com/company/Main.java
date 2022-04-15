@@ -9,30 +9,48 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 
-class swingGUI {
+class SwingGUI {
     String target_url = "https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/locations?limit=100" +
             "&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&dumpRaw=false";
 
-    swingGUI() {
+    SwingGUI() {
         JFrame frame = new JFrame("OpenAQ API Fetcher");
         setupWindow(frame);
     }
 
     public void setupWindow(JFrame frame) {
+
         frame.setSize(800,600);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLayout(null);
 
+        // Labels
+        JLabel openAQimg = new JLabel(new ImageIcon("./favicon.png"));
+        openAQimg.setBounds(200, 200, 100, 100);
+
+        // Text box
+        JTextArea urlText = new JTextArea(target_url);
+        urlText.setLineWrap(true);
+        urlText.setBorder(BorderFactory.createLineBorder(Color.blue));
+        urlText.setBounds(10, 50, 780, 50);
+
+        JTextArea statusBar = new JTextArea();
+        statusBar.setLineWrap(true);
+        statusBar.setBorder(BorderFactory.createLineBorder(Color.blue));
+        statusBar.setBounds(10, 510, 780, 50);
+
         // Buttons
         JButton getData = new JButton("Retrieve data");
         JButton clearData  = new JButton("Clear data");
         JButton quit = new JButton("Exit");
-        JButton pingServer = new JButton("Ping server");
+        JButton pingServer = new JButton("Ping OpenAQ server");
 
         // Button locations
         getData.setBounds(100, 400, 200, 50);
@@ -51,37 +69,53 @@ class swingGUI {
         });
 
         pingServer.addActionListener(e -> {
+            statusBar.setText("Pinging OpenAQ server...");
+            long start = System.currentTimeMillis();
             int response = Main.pingTarget();
-            JOptionPane.showMessageDialog(frame,"Response from ping target url: " + response);
+            long finish = System.currentTimeMillis();
+            long timeElapsed = finish - start;
+
+            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+            Date date = new Date(System.currentTimeMillis());
+            System.out.println(formatter.format(date));
+
+            if (response == 200) {
+                statusBar.setText("[" + formatter.format(date) + "]  " + "  \nResponse from ping target url: HTTP " +
+                        "STATUS CODE 200 - OK - Completed in " + timeElapsed + " ms.\n");
+            } else {
+                statusBar.setText("[" + formatter.format(date) + "]  " + "Response code: " + response + " given. Ping did " +
+                        "not complete successfully.");
+                JOptionPane.showMessageDialog(frame, "Response code: " + response + " given. Ping did not " +
+                        "complete successfully.\n");
+            }
+
 
         });
 
-        // Text box
-        JTextField urlText = new JTextField(target_url);
-        urlText.setBounds(10, 50, 780, 25);
+
         // Add everything to window
         frame.getContentPane().add(clearData);
         frame.getContentPane().add(getData);
         frame.getContentPane().add(quit);
         frame.getContentPane().add(pingServer);
-        frame.getContentPane().add(urlText, BorderLayout.CENTER);
+        frame.getContentPane().add(urlText);
+        frame.getContentPane().add(openAQimg);
+        frame.getContentPane().add(statusBar);
 
         frame.setVisible(true);
-
     }
 }
 
-    public class Main {
+
+public class Main {
 
         public static void createGUI() {
             // creating instance of Frame class
-            swingGUI mainGUI = new swingGUI();
+            SwingGUI mainGUI = new SwingGUI();
         }
 
         public static int pingTarget() {
-            //ping the V2 ping endpoint and then return it's response
-
-            String ping_url = "https://docs.openaq.org/ping1";
+            String ping_url = "https://docs.openaq.org/ping";
             int response_code = 0;
 
             try {
@@ -165,7 +199,7 @@ class swingGUI {
             }
 
             createGUI();
-            //swingGUI SGUI = new swingGUI();
+
 
         }
 
