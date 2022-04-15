@@ -6,49 +6,32 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.awt.*;
+import javax.swing.*;
 import java.net.URL;
 import java.util.Scanner;
 
 
-class main_GUI {
-    // class AWTExample2 directly creates instance of Frame class
-    // initializing using constructor
-    main_GUI() {
+class swingGUI {
 
-        // creating a Frame
-        Frame f = new Frame();
+    swingGUI()  {
+        JFrame frame = new JFrame("OpenAQ API Fetcher");
+        setupWindow(frame);
 
-        // creating a Label
-        Label l = new Label("Employee id:");
+    }
 
-        // creating a Button
-        Button b = new Button("Submit");
+    public void setupWindow(JFrame frame) {
+        frame.setSize(800,600);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
 
-        // creating a TextField
-        TextField t = new TextField();
+        JButton getData = new JButton("Retrieve data");
+        JButton clearData  = new JButton("Clear data");
+        frame.getContentPane().add(clearData);
+        frame.getContentPane().add(getData);
 
-        // setting position of above components in the frame
-        l.setBounds(20, 80, 80, 30);
-        t.setBounds(20, 100, 80, 30);
-        b.setBounds(100, 100, 80, 30);
+        frame.setVisible(true);
 
-        // adding components into frame
-        f.add(b);
-        f.add(l);
-        f.add(t);
-
-        // frame size 300 width and 300 height
-        f.setSize(400, 300);
-
-        // setting the title of frame
-        f.setTitle("Employee info");
-
-        // no layout
-        f.setLayout(null);
-
-        // setting visibility of frame
-        f.setVisible(true);
     }
 }
 
@@ -56,14 +39,14 @@ class main_GUI {
 
         public static void createGUI() {
             // creating instance of Frame class
-            main_GUI gui_obj = new main_GUI();
+            swingGUI mainGUI = new swingGUI();
         }
 
         public static int pingTarget(int url) {
-            // ping the V2 ping endpoint and then return a valid or invalid response from it
-            // int response_code = 200;
-            // return response_code;
-            return 0;
+            //ping the V2 ping endpoint and then return a valid or invalid response from it
+            int response_code = 200;
+            return response_code;
+
         }
 
         public static String parseJSONData(String jsonList) {
@@ -98,6 +81,7 @@ class main_GUI {
 
             return "success";
         }
+
         public static void main(String[] args) {
 
             try {
@@ -133,5 +117,10 @@ class main_GUI {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
+            createGUI();
+            //swingGUI SGUI = new swingGUI();
+
         }
+
     }
