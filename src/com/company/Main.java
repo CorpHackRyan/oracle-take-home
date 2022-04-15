@@ -7,16 +7,18 @@ import org.json.simple.parser.ParseException;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
+import java.awt.*;
 import java.net.URL;
 import java.util.Scanner;
 
 
 class swingGUI {
+    String target_url = "https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/locations?limit=100" +
+            "&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&dumpRaw=false";
 
-    swingGUI()  {
+    swingGUI() {
         JFrame frame = new JFrame("OpenAQ API Fetcher");
         setupWindow(frame);
-
     }
 
     public void setupWindow(JFrame frame) {
@@ -24,11 +26,45 @@ class swingGUI {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        frame.setLayout(null);
 
+        // Buttons
         JButton getData = new JButton("Retrieve data");
         JButton clearData  = new JButton("Clear data");
+        JButton quit = new JButton("Exit");
+        JButton pingServer = new JButton("Ping server");
+
+        // Button locations
+        getData.setBounds(100, 400, 200, 50);
+        clearData.setBounds(300, 400, 200, 50);
+        quit.setBounds(500, 400, 200, 50);
+        pingServer.setBounds(100, 450, 200, 50);
+
+        // Button event listeners
+        quit.addActionListener(e -> {
+            // Exit program
+            System.exit(0);
+        });
+
+        getData.addActionListener(e -> {
+            // code to perform when retrieving data here
+        });
+
+        pingServer.addActionListener(e -> {
+            int response = Main.pingTarget();
+            JOptionPane.showMessageDialog(frame,"Response from ping target url: " + response);
+
+        });
+
+        // Text box
+        JTextField urlText = new JTextField(target_url);
+        urlText.setBounds(10, 50, 780, 25);
+        // Add everything to window
         frame.getContentPane().add(clearData);
         frame.getContentPane().add(getData);
+        frame.getContentPane().add(quit);
+        frame.getContentPane().add(pingServer);
+        frame.getContentPane().add(urlText, BorderLayout.CENTER);
 
         frame.setVisible(true);
 
@@ -42,11 +78,24 @@ class swingGUI {
             swingGUI mainGUI = new swingGUI();
         }
 
-        public static int pingTarget(int url) {
-            //ping the V2 ping endpoint and then return a valid or invalid response from it
-            int response_code = 200;
-            return response_code;
+        public static int pingTarget() {
+            //ping the V2 ping endpoint and then return it's response
 
+            String ping_url = "https://docs.openaq.org/ping1";
+            int response_code = 0;
+
+            try {
+                URL url = new URL(ping_url);
+                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.connect();
+                response_code = conn.getResponseCode();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            return response_code;
         }
 
         public static String parseJSONData(String jsonList) {
@@ -70,9 +119,6 @@ class swingGUI {
                     System.out.println("Elements under results array");
                     System.out.println("\nPlace id: " + jsonObj_1.get("id"));
                     System.out.println("Types: " + jsonObj_1.get("name"));
-
-
-
                 }
                 
             } catch (ParseException pe) {
