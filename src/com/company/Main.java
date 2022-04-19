@@ -8,16 +8,12 @@ import org.json.simple.parser.ParseException;
 import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.Scanner;
 
 class SwingGUI {
-    String target_url = "";
 
     SwingGUI() {
         JFrame frame = new JFrame("OpenAQ API Fetcher");
@@ -53,7 +49,7 @@ class SwingGUI {
         countryCode.setBorder(BorderFactory.createLineBorder(Color.black));
 
         JTextArea urlText = new JTextArea("https://api.openaq.org/v2/measurements?parameter=" +
-                (String)measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit=100");
+                measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit=100");
         urlText.setBorder(BorderFactory.createLineBorder(Color.blue));
         urlText.setBounds(10, 110, 780, 20);
 
@@ -78,47 +74,23 @@ class SwingGUI {
 
         // Button event listeners
         fetchCountryAndParam.addActionListener(e -> {
-            String param = (String)measuredParameter.getSelectedItem();
+            Main.retrieveJSON(urlText.getText());
+
+        });
+
+        fetchCoordinatesAndRadius.addActionListener(e -> {
+
+        });
+
+
+
+        getData.addActionListener(e -> {
 
         });
 
         quit.addActionListener(e -> {
             // Exit program
             System.exit(0);
-        });
-
-        getData.addActionListener(e -> {
-            // code to perform when retrieving data here
-
-            // 1. Hit the live OpenAQ API and return a data structure that represents all the elements to construct a
-            // visual representation of the data in the form of a heatmap visualization of air quality in the given region
-
-            // 2. Code should return enough information to construct a color scale, and lay out the data on the map
-            // for the requested Measure Parameter.
-
-            // 3. Your component should be able to handle the following inputs:
-            // Two-letter “Country Code” and Measured Parameter (pm25, co, no2, etc.)
-            // Decimal-Degree Coordinates & Radius and Measured Parameter (pm25, co, no2, etc.)
-
-            // Most likely transpose the JSON data to CSV format to be consumed by a heat map
-
-            // //country=XX    // where XX = 2 digit us country code
-
-            String OpenAQUrl = "https://api.openaq.org/v1/measurements?country=US&parameter=o3&page=1&limit=1000";
-            try {
-                URL url = new URL(OpenAQUrl);
-                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-                BufferedReader in = new BufferedReader((new InputStreamReader(conn.getInputStream())));
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    System.out.println(inputLine);
-                    urlText.append(inputLine);
-
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                statusBar.setText(String.valueOf(ex));
-            }
         });
 
         pingServer.addActionListener(e -> {
@@ -189,6 +161,42 @@ public class Main {
             return response_code;
         }
 
+        public static void retrieveJSON(String OpenAQUrl) {
+
+             try {
+                StringBuilder results = new StringBuilder();
+                URL url = new URL(OpenAQUrl);
+                HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.connect();
+
+                int response = conn.getResponseCode();
+
+
+
+                if (response != 200) {
+                    throw  new RuntimeException("HTTP Response code: " + response);
+                } else {
+                    Scanner sc = new Scanner(url.openStream());
+                    while(sc.hasNext())
+                    {
+                        results.append(sc.nextLine());
+                    }
+
+                    parseJSONData(results.toString());
+                    System.out.println(results);
+
+                    sc.close();
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+
+
+        }
+
         public static String parseJSONData(String jsonList) {
             try {
                 JSONParser parse = new JSONParser();
@@ -207,9 +215,11 @@ public class Main {
                     //old way: JSONObject jsonObj_1 = (JSONObject)jsArr.get(idx); enhanced way below
                     JSONObject jsonObj_1 = (JSONObject) o;
 
-                    System.out.println("Elements under results array");
-                    System.out.println("\nPlace id: " + jsonObj_1.get("id"));
-                    System.out.println("Types: " + jsonObj_1.get("name"));
+                    //System.out.println("Elements under results array");
+                    //System.out.println("\nPlace id: " + jsonObj_1.get("id"));
+                    //System.out.println("Types: " + jsonObj_1.get("name"));
+                    System.out.println(jsonObj_1);
+
                 }
                 
             } catch (ParseException pe) {
@@ -221,39 +231,7 @@ public class Main {
 
         public static void main(String[] args) {
 
-            /*try {
-                String target_url = "https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/locations?limit=100" +
-                        "&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&dumpRaw=false";
-                URL url = new URL(target_url);
 
-                HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.connect();
-
-                int response = conn.getResponseCode();
-
-                String results = "";
-
-                if (response != 200) {
-                    throw  new RuntimeException("HTTP Response code: " + response);
-                } else {
-                    Scanner sc = new Scanner(url.openStream());
-                    while(sc.hasNext())
-                    {
-                        //Possibly use a string builder here instead - but we may not even need this
-                        results+= sc.nextLine();
-                    }
-
-                    parseJSONData(results);
-                    //System.out.println(results);
-                    System.out.println("\n All JSON data returned  from " + target_url);
-
-                    sc.close();
-                }
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }*/
 
             createGUI();
 
