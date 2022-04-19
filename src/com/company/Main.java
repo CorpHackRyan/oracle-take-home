@@ -17,8 +17,7 @@ import java.util.Date;
 
 
 class SwingGUI {
-    String target_url = "https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/locations?limit=100" +
-            "&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&dumpRaw=false";
+    String target_url = "";
 
     SwingGUI() {
         JFrame frame = new JFrame("OpenAQ API Fetcher");
@@ -36,12 +35,28 @@ class SwingGUI {
         // Labels
         JLabel openAQimg = new JLabel(new ImageIcon("./favicon.png"));
         openAQimg.setBounds(200, 200, 100, 100);
+        JLabel directionsParam = new JLabel("Select your parameter");
+        directionsParam.setBounds(140, 5, 200, 50);
+        JLabel countryCodeDesc = new JLabel("Enter a 2 digit country code");
+        countryCodeDesc.setBounds(400, 5, 200, 50);
+
+
+        // Combo box
+        String[] legalParameters = { "pm25", "pm10", "so2", "no2", "o3", "co", "bc" };
+        JComboBox measuredParameter = new JComboBox(legalParameters);
+        measuredParameter.setBounds(170, 50, 100, 30);
 
         // Text box
-        JTextArea urlText = new JTextArea(target_url);
-        urlText.setLineWrap(true);
+        JTextArea countryCode = new JTextArea("US");
+        countryCode.setBounds(500, 50, 35, 30);
+        countryCode.setFont(new Font("Arial", Font.BOLD, 15));
+        countryCode.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        JTextArea urlText = new JTextArea("https://api.openaq.org/v2/measurements?parameter=" +
+                (String)measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit=100");
         urlText.setBorder(BorderFactory.createLineBorder(Color.blue));
-        urlText.setBounds(10, 50, 780, 50);
+        urlText.setBounds(10, 110, 780, 20);
+
         JTextArea statusBar = new JTextArea();
         statusBar.setLineWrap(true);
         statusBar.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -49,17 +64,24 @@ class SwingGUI {
 
         // Buttons
         JButton getData = new JButton("Retrieve data");
-        JButton clearData  = new JButton("Clear data");
+        JButton fetchCountryAndParam  = new JButton("Fetch data");
+        JButton fetchCoordinatesAndRadius = new JButton("Fetch data");
         JButton quit = new JButton("Exit");
         JButton pingServer = new JButton("Ping OpenAQ server");
 
         // Button locations
         getData.setBounds(100, 400, 200, 50);
-        clearData.setBounds(300, 400, 200, 50);
+        fetchCountryAndParam.setBounds(300, 400, 200, 50);
+        fetchCoordinatesAndRadius.setBounds(300, 150, 200, 25);
         quit.setBounds(500, 400, 200, 50);
         pingServer.setBounds(100, 450, 200, 50);
 
         // Button event listeners
+        fetchCountryAndParam.addActionListener(e -> {
+            String param = (String)measuredParameter.getSelectedItem();
+
+        });
+
         quit.addActionListener(e -> {
             // Exit program
             System.exit(0);
@@ -124,13 +146,19 @@ class SwingGUI {
 
 
         // Add everything to window
-        frame.getContentPane().add(clearData);
+        frame.getContentPane().add(fetchCountryAndParam);
+        frame.getContentPane().add(fetchCoordinatesAndRadius);
         frame.getContentPane().add(getData);
         frame.getContentPane().add(quit);
         frame.getContentPane().add(pingServer);
         frame.getContentPane().add(urlText);
         frame.getContentPane().add(openAQimg);
         frame.getContentPane().add(statusBar);
+        frame.getContentPane().add(measuredParameter);
+        frame.getContentPane().add(directionsParam);
+        frame.getContentPane().add(countryCodeDesc);
+        frame.getContentPane().add(countryCode);
+
 
         frame.setVisible(true);
     }
