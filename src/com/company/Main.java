@@ -32,32 +32,37 @@ class SwingGUI {
         // Labels
         JLabel openAQimg = new JLabel(new ImageIcon("./favicon.png"));
         JLabel openAQimg2 = new JLabel(new ImageIcon("./favicon.png"));
+        JLabel openAQimg3 = new JLabel(new ImageIcon("./favicon.png"));
         openAQimg.setBounds(10, 200, 100, 100);
         openAQimg2.setBounds(680, 200, 100, 100);
+        openAQimg3.setBounds(350, 200, 100, 100);
 
         JLabel directionsParam = new JLabel("Select your parameter");
-        directionsParam.setBounds(140, 5, 200, 50);
+        directionsParam.setBounds(10, 5, 200, 50);
+
         JLabel countryCodeDesc = new JLabel("Enter a 2 digit country code");
-        countryCodeDesc.setBounds(400, 5, 200, 50);
+        countryCodeDesc.setBounds(300, 5, 200, 50);
 
         JLabel statusLbl = new JLabel("Responses from OpenAQ server...");
         statusLbl.setBounds(275, 460, 300, 50);
 
+        JLabel limitLbl = new JLabel("Enter limit per page (max 100000)");
+        limitLbl.setBounds(550, 5, 250, 50);
+
         // Combo boxes
         String[] legalParameters = { "pm25", "pm10", "so2", "no2", "o3", "co", "bc" };
         JComboBox<String> measuredParameter = new JComboBox<>(legalParameters);
-        measuredParameter.setBounds(170, 50, 100, 30);
+        measuredParameter.setBounds(40, 50, 100, 30);
 
         // Text boxes
         JTextArea countryCode = new JTextArea("US");
-        countryCode.setBounds(500, 50, 35, 30);
+        countryCode.setBounds(375, 50, 35, 30);
         countryCode.setFont(new Font("Arial", Font.BOLD, 15));
         countryCode.setBorder(BorderFactory.createLineBorder(Color.black));
 
-
         JTextArea limitTxt = new JTextArea("1000");
         limitTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
-        limitTxt.setBounds(700, 50, 35, 30);
+        limitTxt.setBounds(650, 50, 50, 30);
         limitTxt.setFont(new Font("Arial", Font.BOLD, 15));
 
 
@@ -88,7 +93,15 @@ class SwingGUI {
         pingServer.setBounds(10, 475, 200, 25);
 
         // Event listeners
-        fetchCountryAndParam.addActionListener(e -> Main.retrieveJSON(urlText.getText()));
+        fetchCountryAndParam.addActionListener(e -> {
+            urlText.setText("https://api.openaq.org/v2/measurements?parameter=" +
+                    measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit="
+                    + limitTxt.getText());
+
+            Main.retrieveJSON(urlText.getText());
+
+
+        });
 
         fetchCoordinatesAndRadius.addActionListener(e -> {
 
@@ -124,6 +137,8 @@ class SwingGUI {
                 + measuredParameter.getSelectedItem()
                 + "&country=" + countryCode.getText() + "&limit=" + limitTxt.getText()));
 
+
+
         // Add everything to window
         frame.getContentPane().add(fetchCountryAndParam);
         frame.getContentPane().add(fetchCoordinatesAndRadius);
@@ -133,6 +148,7 @@ class SwingGUI {
         frame.getContentPane().add(urlText);
         frame.getContentPane().add(openAQimg);
         frame.getContentPane().add(openAQimg2);
+        frame.getContentPane().add(openAQimg3);
         frame.getContentPane().add(statusBar);
         frame.getContentPane().add(measuredParameter);
         frame.getContentPane().add(directionsParam);
@@ -140,6 +156,7 @@ class SwingGUI {
         frame.getContentPane().add(countryCode);
         frame.getContentPane().add(statusLbl);
         frame.getContentPane().add(limitTxt);
+        frame.getContentPane().add(limitLbl);
 
         frame.setVisible(true);
     }
