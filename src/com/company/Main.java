@@ -39,7 +39,7 @@ class SwingGUI {
 
         // Combo box
         String[] legalParameters = { "pm25", "pm10", "so2", "no2", "o3", "co", "bc" };
-        JComboBox measuredParameter = new JComboBox(legalParameters);
+        JComboBox<String> measuredParameter = new JComboBox<>(legalParameters);
         measuredParameter.setBounds(170, 50, 100, 30);
 
         // Text box
@@ -59,29 +59,25 @@ class SwingGUI {
         statusBar.setBounds(10, 510, 780, 50);
 
         // Buttons
-        JButton getData = new JButton("Retrieve data");
+        JButton getData = new JButton("Blank button");
         JButton fetchCountryAndParam  = new JButton("Fetch data");
         JButton fetchCoordinatesAndRadius = new JButton("Fetch data");
         JButton quit = new JButton("Exit");
         JButton pingServer = new JButton("Ping OpenAQ server");
 
         // Button locations
-        getData.setBounds(100, 400, 200, 50);
-        fetchCountryAndParam.setBounds(300, 400, 200, 50);
-        fetchCoordinatesAndRadius.setBounds(300, 150, 200, 25);
-        quit.setBounds(500, 400, 200, 50);
-        pingServer.setBounds(100, 450, 200, 50);
+        getData.setBounds(100, 400, 200, 25);
+        fetchCountryAndParam.setBounds(300, 150, 200, 25);
+        fetchCoordinatesAndRadius.setBounds(300, 400, 200, 25);
+        quit.setBounds(500, 400, 200, 25);
+        pingServer.setBounds(100, 450, 200, 25);
 
         // Button event listeners
-        fetchCountryAndParam.addActionListener(e -> {
-            Main.retrieveJSON(urlText.getText());
-
-        });
+        fetchCountryAndParam.addActionListener(e -> Main.retrieveJSON(urlText.getText()));
 
         fetchCoordinatesAndRadius.addActionListener(e -> {
 
         });
-
 
 
         getData.addActionListener(e -> {
@@ -112,10 +108,7 @@ class SwingGUI {
                 JOptionPane.showMessageDialog(frame, "Response code: " + response + " given. Ping did not " +
                         "complete successfully.\n");
             }
-
-
         });
-
 
         // Add everything to window
         frame.getContentPane().add(fetchCountryAndParam);
@@ -130,7 +123,6 @@ class SwingGUI {
         frame.getContentPane().add(directionsParam);
         frame.getContentPane().add(countryCodeDesc);
         frame.getContentPane().add(countryCode);
-
 
         frame.setVisible(true);
     }
@@ -165,14 +157,12 @@ public class Main {
 
              try {
                 StringBuilder results = new StringBuilder();
+
                 URL url = new URL(OpenAQUrl);
                 HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.connect();
-
                 int response = conn.getResponseCode();
-
-
 
                 if (response != 200) {
                     throw  new RuntimeException("HTTP Response code: " + response);
@@ -188,16 +178,12 @@ public class Main {
 
                     sc.close();
                 }
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-
-
-
         }
 
-        public static String parseJSONData(String jsonList) {
+        public static void parseJSONData(String jsonList) {
             try {
                 JSONParser parse = new JSONParser();
                 JSONObject jobJ = (JSONObject) parse.parse(jsonList);
@@ -205,37 +191,21 @@ public class Main {
                 //convert  JSON obj values into a JSON results array
                 JSONArray jsArr = (JSONArray) jobJ.get("results");
 
-                //Get data for Results array
-
-                //old way: for(int idx =0; idx < jsArr.size() ; idx++)
                 for (Object o : jsArr) {
                     //Store the JSON objects in an array
                     //Get the index of the JSON object and print the values as per the index
-
-                    //old way: JSONObject jsonObj_1 = (JSONObject)jsArr.get(idx); enhanced way below
                     JSONObject jsonObj_1 = (JSONObject) o;
-
-                    //System.out.println("Elements under results array");
-                    //System.out.println("\nPlace id: " + jsonObj_1.get("id"));
-                    //System.out.println("Types: " + jsonObj_1.get("name"));
                     System.out.println(jsonObj_1);
-
                 }
                 
             } catch (ParseException pe) {
                 pe.printStackTrace();
             }
 
-            return "success";
+
         }
 
         public static void main(String[] args) {
-
-
-
             createGUI();
-
-
         }
-
     }
