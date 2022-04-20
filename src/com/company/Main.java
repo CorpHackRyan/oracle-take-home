@@ -38,16 +38,23 @@ class SwingGUI {
         openAQimg3.setBounds(350, 200, 100, 100);
 
         JLabel directionsParam = new JLabel("Select your parameter");
-        directionsParam.setBounds(10, 5, 200, 50);
-
         JLabel countryCodeDesc = new JLabel("Enter a 2 digit country code");
-        countryCodeDesc.setBounds(300, 5, 200, 50);
-
-        JLabel statusLbl = new JLabel("Responses from OpenAQ server...");
-        statusLbl.setBounds(275, 460, 300, 50);
-
         JLabel limitLbl = new JLabel("Enter limit per page (max 100000)");
+        JLabel latitudeLbl = new JLabel("Latitude");
+        JLabel longitudeLbl = new JLabel("Longitude");
+        JLabel radiusLbl = new JLabel("Radius");
+        JLabel selectParamlbl = new JLabel("Select your parameter");
+        JLabel statusLbl = new JLabel("Responses from OpenAQ server...");
+        directionsParam.setBounds(10, 5, 200, 50);
+        countryCodeDesc.setBounds(300, 5, 200, 50);
         limitLbl.setBounds(550, 5, 250, 50);
+        statusLbl.setBounds(275, 460, 300, 50);
+        latitudeLbl.setBounds(15, 340, 90, 20);
+        longitudeLbl.setBounds(110, 340, 90, 20);
+        radiusLbl.setBounds(370, 340, 70, 20);
+        selectParamlbl.setBounds(600, 340, 170, 20);
+
+
 
 
         // Combo boxes
@@ -55,7 +62,7 @@ class SwingGUI {
         JComboBox<String> measuredParameter = new JComboBox<>(legalParameters);
         measuredParameter.setBounds(40, 50, 100, 30);
         JComboBox<String> measuredParameter2 = new JComboBox<>(legalParameters);
-        measuredParameter.setBounds(400, 600, 100, 30);
+        measuredParameter2.setBounds(630, 370, 100, 30);
 
         // Text boxes
         JTextArea countryCode = new JTextArea("US");
@@ -67,7 +74,6 @@ class SwingGUI {
         limitTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
         limitTxt.setBounds(650, 50, 50, 30);
         limitTxt.setFont(new Font("Arial", Font.BOLD, 15));
-
 
         JTextArea urlText = new JTextArea("https://api.openaq.org/v2/measurements?parameter=" +
                 measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit="
@@ -89,11 +95,15 @@ class SwingGUI {
         JTextArea longitudeTxt = new JTextArea();
         JTextArea radiusTxt = new JTextArea();
 
-        latitudeTxt.setBounds(20, 400, 100, 100);
-        longitudeTxt.setBounds(40, 400, 100, 100);
-        radiusTxt.setBounds(120, 400, 100, 100);
+        latitudeTxt.setBounds(10, 370, 70, 20);
+        longitudeTxt.setBounds(110, 370, 70, 20);
+        radiusTxt.setBounds(350, 370, 100, 20);
 
-        
+        latitudeTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
+        longitudeTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
+        radiusTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
+
+
         // Buttons
         JButton fetchCountryAndParam  = new JButton("Fetch data");
         JButton fetchCoordinatesAndRadius = new JButton("Fetch data");
@@ -175,7 +185,10 @@ class SwingGUI {
         frame.getContentPane().add(latitudeTxt);
         frame.getContentPane().add(longitudeTxt);
         frame.getContentPane().add(radiusTxt);
-
+        frame.getContentPane().add(latitudeLbl);
+        frame.getContentPane().add(longitudeLbl);
+        frame.getContentPane().add(radiusLbl);
+        frame.getContentPane().add(selectParamlbl);
         frame.setVisible(true);
     }
 }
