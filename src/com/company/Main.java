@@ -62,8 +62,8 @@ class SwingGUI {
         JComboBox<String> measuredParameter = new JComboBox<>(legalParameters);
         measuredParameter.setBounds(40, 50, 100, 30);
         JComboBox<String> measuredParameter2 = new JComboBox<>(legalParameters);
-        measuredParameter2.setBounds(630, 370, 100, 30);
-
+        measuredParameter2.setBounds(630, 360, 100, 30);
+        measuredParameter2.setSelectedItem("o3");
 
         // Text boxes
         JTextArea countryCode = new JTextArea("US");
@@ -82,27 +82,32 @@ class SwingGUI {
         urlText.setBorder(BorderFactory.createLineBorder(Color.blue));
         urlText.setBounds(10, 110, 780, 20);
 
-        //https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/measurements?limit=100&page=1&offset=0&sort=desc&parameter=o3&coordinates=41.886017%2C12.541614&radius=1000
-        JTextArea urlText2 = new JTextArea("");
-        urlText2.setBorder(BorderFactory.createLineBorder(Color.blue));
-        urlText2.setBounds(10, 410, 780, 20);
 
         JTextArea statusBar = new JTextArea();
         statusBar.setLineWrap(true);
         statusBar.setBorder(BorderFactory.createLineBorder(Color.blue));
         statusBar.setBounds(10, 510, 780, 50);
 
-        JTextArea latitudeTxt = new JTextArea();
-        JTextArea longitudeTxt = new JTextArea();
-        JTextArea radiusTxt = new JTextArea();
+        JTextArea latitudeTxt = new JTextArea("41.886017");
+        JTextArea longitudeTxt = new JTextArea("12.541614");
+        JTextArea radiusTxt = new JTextArea("1000");
 
-        latitudeTxt.setBounds(10, 370, 70, 20);
-        longitudeTxt.setBounds(110, 370, 70, 20);
-        radiusTxt.setBounds(350, 370, 100, 20);
+        latitudeTxt.setBounds(10, 360, 75, 20);
+        longitudeTxt.setBounds(110, 360, 75, 20);
+        radiusTxt.setBounds(370, 360, 50, 20);
 
         latitudeTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
         longitudeTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
         radiusTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
+
+        //https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/measurements?limit=100&page=1&offset=0&sort=desc&parameter=o3&coordinates=41.886017%2C12.541614&radius=1000
+        JTextArea urlText2 = new JTextArea(v2URL + "/measurements?limit=1000&page=1&parameter="
+                + measuredParameter2.getSelectedItem() + "&coordinates=" + latitudeTxt.getText() + "%2C" +
+                longitudeTxt.getText() + "&radius=" + radiusTxt.getText());
+        urlText2.setLineWrap(true);
+        urlText2.setBorder(BorderFactory.createLineBorder(Color.blue));
+        urlText2.setBounds(10, 395, 780, 35);
+
 
 
         // Buttons
@@ -129,8 +134,12 @@ class SwingGUI {
         });
 
         fetchCoordinatesAndRadius.addActionListener(e -> {
-
+            urlText2.setText(v2URL + "/measurements?limit=1000&&parameter="
+                            + measuredParameter2.getSelectedItem() + "&coordinates=" + latitudeTxt.getText() + "%2C" +
+                            longitudeTxt.getText() + "&radius=" + radiusTxt.getText());
+            Main.retrieveJSON(urlText2.getText());
         });
+
 
         quit.addActionListener(e -> {
             // Exit program
