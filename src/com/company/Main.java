@@ -49,10 +49,13 @@ class SwingGUI {
         JLabel limitLbl = new JLabel("Enter limit per page (max 100000)");
         limitLbl.setBounds(550, 5, 250, 50);
 
+
         // Combo boxes
         String[] legalParameters = { "pm25", "pm10", "so2", "no2", "o3", "co", "bc" };
         JComboBox<String> measuredParameter = new JComboBox<>(legalParameters);
         measuredParameter.setBounds(40, 50, 100, 30);
+        JComboBox<String> measuredParameter2 = new JComboBox<>(legalParameters);
+        measuredParameter.setBounds(400, 600, 100, 30);
 
         // Text boxes
         JTextArea countryCode = new JTextArea("US");
@@ -72,25 +75,38 @@ class SwingGUI {
         urlText.setBorder(BorderFactory.createLineBorder(Color.blue));
         urlText.setBounds(10, 110, 780, 20);
 
+        //https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/measurements?limit=100&page=1&offset=0&sort=desc&parameter=o3&coordinates=41.886017%2C12.541614&radius=1000
+        JTextArea urlText2 = new JTextArea("");
+        urlText2.setBorder(BorderFactory.createLineBorder(Color.blue));
+        urlText2.setBounds(10, 410, 780, 20);
 
         JTextArea statusBar = new JTextArea();
         statusBar.setLineWrap(true);
         statusBar.setBorder(BorderFactory.createLineBorder(Color.blue));
         statusBar.setBounds(10, 510, 780, 50);
 
+        JTextArea latitudeTxt = new JTextArea();
+        JTextArea longitudeTxt = new JTextArea();
+        JTextArea radiusTxt = new JTextArea();
+
+        latitudeTxt.setBounds(20, 400, 100, 100);
+        longitudeTxt.setBounds(40, 400, 100, 100);
+        radiusTxt.setBounds(120, 400, 100, 100);
+
+        
         // Buttons
-        JButton getData = new JButton("Blank button");
         JButton fetchCountryAndParam  = new JButton("Fetch data");
         JButton fetchCoordinatesAndRadius = new JButton("Fetch data");
         JButton quit = new JButton("Exit");
         JButton pingServer = new JButton("Ping OpenAQ server");
 
+
         // Button locations
-        getData.setBounds(100, 400, 200, 25);
         fetchCountryAndParam.setBounds(300, 150, 200, 25);
-        fetchCoordinatesAndRadius.setBounds(300, 400, 200, 25);
+        fetchCoordinatesAndRadius.setBounds(300, 440, 200, 25);
         quit.setBounds(590, 475, 200, 25);
         pingServer.setBounds(10, 475, 200, 25);
+
 
         // Event listeners
         fetchCountryAndParam.addActionListener(e -> {
@@ -99,20 +115,17 @@ class SwingGUI {
                     + limitTxt.getText());
 
             Main.retrieveJSON(urlText.getText());
-
-
         });
 
         fetchCoordinatesAndRadius.addActionListener(e -> {
 
         });
-        getData.addActionListener(e -> {
 
-        });
         quit.addActionListener(e -> {
             // Exit program
             System.exit(0);
         });
+
         pingServer.addActionListener(e -> {
             statusBar.setText("Pinging OpenAQ server...");
             long start = System.currentTimeMillis();
@@ -133,6 +146,7 @@ class SwingGUI {
                         "complete successfully.\n");
             }
         });
+
         measuredParameter.addActionListener(e -> urlText.setText("https://api.openaq.org/v2/measurements?parameter="
                 + measuredParameter.getSelectedItem()
                 + "&country=" + countryCode.getText() + "&limit=" + limitTxt.getText()));
@@ -142,21 +156,25 @@ class SwingGUI {
         // Add everything to window
         frame.getContentPane().add(fetchCountryAndParam);
         frame.getContentPane().add(fetchCoordinatesAndRadius);
-        frame.getContentPane().add(getData);
         frame.getContentPane().add(quit);
         frame.getContentPane().add(pingServer);
         frame.getContentPane().add(urlText);
+        frame.getContentPane().add(urlText2);
         frame.getContentPane().add(openAQimg);
         frame.getContentPane().add(openAQimg2);
         frame.getContentPane().add(openAQimg3);
         frame.getContentPane().add(statusBar);
         frame.getContentPane().add(measuredParameter);
+        frame.getContentPane().add(measuredParameter2);
         frame.getContentPane().add(directionsParam);
         frame.getContentPane().add(countryCodeDesc);
         frame.getContentPane().add(countryCode);
         frame.getContentPane().add(statusLbl);
         frame.getContentPane().add(limitTxt);
         frame.getContentPane().add(limitLbl);
+        frame.getContentPane().add(latitudeTxt);
+        frame.getContentPane().add(longitudeTxt);
+        frame.getContentPane().add(radiusTxt);
 
         frame.setVisible(true);
     }
