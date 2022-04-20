@@ -23,6 +23,8 @@ class SwingGUI {
 
     public void setupWindow(JFrame frame) {
 
+        String v2URL = "https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2";
+
         frame.setSize(800,600);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,14 +57,13 @@ class SwingGUI {
         selectParamlbl.setBounds(600, 340, 170, 20);
 
 
-
-
         // Combo boxes
         String[] legalParameters = { "pm25", "pm10", "so2", "no2", "o3", "co", "bc" };
         JComboBox<String> measuredParameter = new JComboBox<>(legalParameters);
         measuredParameter.setBounds(40, 50, 100, 30);
         JComboBox<String> measuredParameter2 = new JComboBox<>(legalParameters);
         measuredParameter2.setBounds(630, 370, 100, 30);
+
 
         // Text boxes
         JTextArea countryCode = new JTextArea("US");
@@ -75,7 +76,7 @@ class SwingGUI {
         limitTxt.setBounds(650, 50, 50, 30);
         limitTxt.setFont(new Font("Arial", Font.BOLD, 15));
 
-        JTextArea urlText = new JTextArea("https://api.openaq.org/v2/measurements?parameter=" +
+        JTextArea urlText = new JTextArea(v2URL + "/measurements?parameter=" +
                 measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit="
                 + limitTxt.getText());
         urlText.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -120,7 +121,7 @@ class SwingGUI {
 
         // Event listeners
         fetchCountryAndParam.addActionListener(e -> {
-            urlText.setText("https://api.openaq.org/v2/measurements?parameter=" +
+            urlText.setText(v2URL + "/measurements?parameter=" +
                     measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit="
                     + limitTxt.getText());
 
@@ -157,7 +158,7 @@ class SwingGUI {
             }
         });
 
-        measuredParameter.addActionListener(e -> urlText.setText("https://api.openaq.org/v2/measurements?parameter="
+        measuredParameter.addActionListener(e -> urlText.setText(v2URL + "/measurements?parameter="
                 + measuredParameter.getSelectedItem()
                 + "&country=" + countryCode.getText() + "&limit=" + limitTxt.getText()));
 
@@ -201,7 +202,7 @@ public class Main {
         }
 
         public static int pingTarget() {
-            String ping_url = "https://docs.openaq.org/ping";
+            String ping_url = "https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/ping";
             int response_code = 0;
 
             try {
