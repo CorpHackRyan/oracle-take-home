@@ -101,7 +101,7 @@ class SwingGUI {
         radiusTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
 
         //https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/measurements?limit=100&page=1&offset=0&sort=desc&parameter=o3&coordinates=41.886017%2C12.541614&radius=1000
-        JTextArea urlText2 = new JTextArea(v2URL + "/measurements?limit=1000&page=1&parameter="
+        JTextArea urlText2 = new JTextArea(v2URL + "/measurements?limit=1000&parameter="
                 + measuredParameter2.getSelectedItem() + "&coordinates=" + latitudeTxt.getText() + "%2C" +
                 longitudeTxt.getText() + "&radius=" + radiusTxt.getText());
         urlText2.setLineWrap(true);
