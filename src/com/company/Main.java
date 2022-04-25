@@ -110,7 +110,7 @@ class SwingGUI {
 
 
 
-        // Buttons
+        // Buttons /
         JButton fetchCountryAndParam  = new JButton("Fetch data");
         JButton fetchCoordinatesAndRadius = new JButton("Fetch data");
         JButton quit = new JButton("Exit");
