@@ -32,13 +32,6 @@ class SwingGUI {
         frame.setLayout(null);
 
         // Labels
-        JLabel openAQimg = new JLabel(new ImageIcon("./favicon.png"));
-        JLabel openAQimg2 = new JLabel(new ImageIcon("./favicon.png"));
-        JLabel openAQimg3 = new JLabel(new ImageIcon("./favicon.png"));
-        openAQimg.setBounds(10, 200, 100, 100);
-        openAQimg2.setBounds(680, 200, 100, 100);
-        openAQimg3.setBounds(350, 200, 100, 100);
-
         JLabel directionsParam = new JLabel("Select your parameter");
         JLabel countryCodeDesc = new JLabel("Enter a 2 digit country code");
         JLabel limitLbl = new JLabel("Enter limit per page (max 100000)");
@@ -47,68 +40,45 @@ class SwingGUI {
         JLabel radiusLbl = new JLabel("Radius");
         JLabel selectParamlbl = new JLabel("Select your parameter");
         JLabel statusLbl = new JLabel("Responses from OpenAQ server...");
-        directionsParam.setBounds(10, 5, 200, 50);
-        countryCodeDesc.setBounds(300, 5, 200, 50);
-        limitLbl.setBounds(550, 5, 250, 50);
-        statusLbl.setBounds(275, 460, 300, 50);
-        latitudeLbl.setBounds(15, 340, 90, 20);
-        longitudeLbl.setBounds(110, 340, 90, 20);
-        radiusLbl.setBounds(370, 340, 70, 20);
-        selectParamlbl.setBounds(600, 340, 170, 20);
-
+        JLabel openAQimg = new JLabel(new ImageIcon("./favicon.png"));
+        JLabel openAQimg2 = new JLabel(new ImageIcon("./favicon.png"));
+        JLabel openAQimg3 = new JLabel(new ImageIcon("./favicon.png"));
 
         // Combo boxes
         String[] legalParameters = { "pm25", "pm10", "so2", "no2", "o3", "co", "bc" };
         JComboBox<String> measuredParameter = new JComboBox<>(legalParameters);
-        measuredParameter.setBounds(40, 50, 100, 30);
         JComboBox<String> measuredParameter2 = new JComboBox<>(legalParameters);
-        measuredParameter2.setBounds(630, 360, 100, 30);
         measuredParameter2.setSelectedItem("o3");
 
         // Text boxes
         JTextArea countryCode = new JTextArea("US");
-        countryCode.setBounds(375, 50, 35, 30);
         countryCode.setFont(new Font("Arial", Font.BOLD, 15));
         countryCode.setBorder(BorderFactory.createLineBorder(Color.black));
-
         JTextArea limitTxt = new JTextArea("1000");
         limitTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
-        limitTxt.setBounds(650, 50, 50, 30);
         limitTxt.setFont(new Font("Arial", Font.BOLD, 15));
 
         JTextArea urlText = new JTextArea(v2URL + "/measurements?parameter=" +
                 measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit="
                 + limitTxt.getText());
         urlText.setBorder(BorderFactory.createLineBorder(Color.blue));
-        urlText.setBounds(10, 110, 780, 20);
-
 
         JTextArea statusBar = new JTextArea();
         statusBar.setLineWrap(true);
         statusBar.setBorder(BorderFactory.createLineBorder(Color.blue));
-        statusBar.setBounds(10, 510, 780, 50);
 
         JTextArea latitudeTxt = new JTextArea("41.886017");
         JTextArea longitudeTxt = new JTextArea("12.541614");
         JTextArea radiusTxt = new JTextArea("1000");
-
-        latitudeTxt.setBounds(10, 360, 75, 20);
-        longitudeTxt.setBounds(110, 360, 75, 20);
-        radiusTxt.setBounds(370, 360, 50, 20);
-
         latitudeTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
         longitudeTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
         radiusTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
 
-        //https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/v2/measurements?limit=100&page=1&offset=0&sort=desc&parameter=o3&coordinates=41.886017%2C12.541614&radius=1000
         JTextArea urlText2 = new JTextArea(v2URL + "/measurements?limit=1000&parameter="
                 + measuredParameter2.getSelectedItem() + "&coordinates=" + latitudeTxt.getText() + "%2C" +
                 longitudeTxt.getText() + "&radius=" + radiusTxt.getText());
         urlText2.setLineWrap(true);
         urlText2.setBorder(BorderFactory.createLineBorder(Color.blue));
-        urlText2.setBounds(10, 395, 780, 35);
-
-
 
         // Buttons /
         JButton fetchCountryAndParam  = new JButton("Fetch data");
@@ -116,12 +86,6 @@ class SwingGUI {
         JButton quit = new JButton("Exit");
         JButton pingServer = new JButton("Ping OpenAQ server");
 
-
-        // Button locations
-        fetchCountryAndParam.setBounds(300, 150, 200, 25);
-        fetchCoordinatesAndRadius.setBounds(300, 440, 200, 25);
-        quit.setBounds(590, 475, 200, 25);
-        pingServer.setBounds(10, 475, 200, 25);
 
 
         // Event listeners
@@ -172,7 +136,33 @@ class SwingGUI {
                 + "&country=" + countryCode.getText() + "&limit=" + limitTxt.getText()));
 
 
-
+        // Placement of all objects
+        openAQimg.setBounds(10, 200, 100, 100);
+        openAQimg2.setBounds(680, 200, 100, 100);
+        openAQimg3.setBounds(350, 200, 100, 100);
+        directionsParam.setBounds(10, 5, 200, 50);
+        countryCodeDesc.setBounds(300, 5, 200, 50);
+        limitLbl.setBounds(550, 5, 250, 50);
+        statusLbl.setBounds(275, 460, 300, 50);
+        latitudeLbl.setBounds(15, 340, 90, 20);
+        longitudeLbl.setBounds(110, 340, 90, 20);
+        radiusLbl.setBounds(370, 340, 70, 20);
+        selectParamlbl.setBounds(600, 340, 170, 20);
+        measuredParameter.setBounds(40, 50, 100, 30);
+        measuredParameter2.setBounds(630, 360, 100, 30);
+        countryCode.setBounds(375, 50, 35, 30);
+        limitTxt.setBounds(650, 50, 50, 30);
+        urlText.setBounds(10, 110, 780, 20);
+        statusBar.setBounds(10, 510, 780, 50);
+        latitudeTxt.setBounds(10, 360, 75, 20);
+        longitudeTxt.setBounds(110, 360, 75, 20);
+        radiusTxt.setBounds(370, 360, 50, 20);
+        urlText2.setBounds(10, 395, 780, 35);
+        fetchCountryAndParam.setBounds(300, 150, 200, 25);
+        fetchCoordinatesAndRadius.setBounds(300, 440, 200, 25);
+        quit.setBounds(590, 475, 200, 25);
+        pingServer.setBounds(10, 475, 200, 25);
+        
         // Add everything to window
         frame.getContentPane().add(fetchCountryAndParam);
         frame.getContentPane().add(fetchCoordinatesAndRadius);
