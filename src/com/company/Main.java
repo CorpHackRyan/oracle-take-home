@@ -9,6 +9,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -80,7 +83,7 @@ class SwingGUI {
         urlText2.setLineWrap(true);
         urlText2.setBorder(BorderFactory.createLineBorder(Color.blue));
 
-        // Buttons /
+        // Buttons
         JButton fetchCountryAndParam  = new JButton("Fetch data");
         JButton fetchCoordinatesAndRadius = new JButton("Fetch data");
         JButton quit = new JButton("Exit");
@@ -253,6 +256,7 @@ public class Main {
                 JSONParser parse = new JSONParser();
                 JSONObject jobJ = (JSONObject) parse.parse(jsonList);
 
+
                 //convert  JSON obj values into a JSON results array
                 JSONArray jsArr = (JSONArray) jobJ.get("results");
 
@@ -260,7 +264,13 @@ public class Main {
                     //Store the JSON objects in an array
                     //Get the index of the JSON object and print the values as per the index
                     JSONObject jsonObj_1 = (JSONObject) o;
-                    System.out.println(jsonObj_1);
+                    System.out.println("line" + jsonObj_1); //jsonObj_1 +
+                }
+
+                try (FileWriter file = new FileWriter("openaq.json")) {
+                    file.write(jobJ.toJSONString());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 
             } catch (ParseException pe) {
