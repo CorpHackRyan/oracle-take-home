@@ -93,7 +93,6 @@ class SwingGUI {
             urlText.setText(v2URL + "/measurements?parameter=" +
                     measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit="
                     + limitTxt.getText());
-
             Main.retrieveJSON(urlText.getText());
         });
 
@@ -162,7 +161,7 @@ class SwingGUI {
         fetchCoordinatesAndRadius.setBounds(300, 440, 200, 25);
         quit.setBounds(590, 475, 200, 25);
         pingServer.setBounds(10, 475, 200, 25);
-        
+
         // Add everything to window
         frame.getContentPane().add(fetchCountryAndParam);
         frame.getContentPane().add(fetchCoordinatesAndRadius);
@@ -244,7 +243,8 @@ public class Main {
                     sc.close();
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "An error occurred: \n" + ex);
+
             }
         }
 
