@@ -42,4 +42,4 @@ Requires json simple 1.1.1
 If you wish to execute the stand-alone JAR file, you can download it [HERE.](https://github.com/CorpHackRyan/oracle-take-home/blob/master/out/artifacts/oracle_take_home_jar/oracle-take-home.jar)
 
 # Output
-<img src="./mainScreen.png" alt="Main screen">
+<img src="assets/mainScreen.png" alt="Main screen">

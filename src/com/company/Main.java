@@ -44,9 +44,9 @@ class SwingGUI {
         JLabel selectParamLbl = new JLabel("Select your parameter");
         JLabel limit2Lbl = new JLabel("Enter limit per page (max 100000)");
         JLabel statusLbl = new JLabel("Responses from OpenAQ server...");
-        JLabel openAQImg = new JLabel(new ImageIcon("./favicon.png"));
-        JLabel openAQImg2 = new JLabel(new ImageIcon("./favicon.png"));
-        JLabel openAQImg3 = new JLabel(new ImageIcon("./favicon.png"));
+        JLabel openAQImg = new JLabel(new ImageIcon("favicon.png"));
+        JLabel openAQImg2 = new JLabel(new ImageIcon("favicon.png"));
+        JLabel openAQImg3 = new JLabel(new ImageIcon("favicon.png"));
 
         // Combo boxes
         String[] legalParameters = { "pm25", "pm10", "so2", "no2", "o3", "co", "bc" };
