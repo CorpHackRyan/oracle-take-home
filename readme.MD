@@ -36,3 +36,6 @@ to construct a color scale, and lay out the data on the map for the requested Me
 
 
 # Setup
+
+# Output
+<img src="./mainScreen.png">
