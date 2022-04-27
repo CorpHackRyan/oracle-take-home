@@ -1,25 +1,21 @@
 # Back-End / Java Take-Home Assessment
 <div style="text-align: center;"><img src="favicon.png"><br></div>
-<div style="text-align: center; font-size: 22px;>
 
-# Table of contents
- [Overview](#overview) <br>
- [Scope](#scope) <br>
- [Setup](#setup) <br>
- [Usage](#usage) <br> 
- [Output](#output)<br>
-
-</div>
+## Table of contents
+* [Overview](#overview) 
+* [Scope](#scope)
+* [Setup](#setup)
+* [Usage](#usage)
+* [Output](#output)
 
 
 
-# Overview
+## Overview
 Simple Java app created using the Java Swing framework for the graphical user interface. This application consumes 
 data via an API endpoint url using the JSON format from OpenAQ.org and converts that data to a CSV format. 
-This CSV can then be used by a front-end developer for a consumption into a heat map visualization.<br>
-<br><a href="https://openaq.org/"><img alt="OpenAQ" src="assets/oaq-logo-col-pos.svg"></a>
+This CSV can then be used by a front-end developer for a consumption into a heat map visualization.
 
-# Scope
+## Scope
 Use the OpenAQ-provided API to create a component that provides a heatmap of air quality data in your home country!
 
 OpenAQ (https://openaq.org/) is a free resource that provides, via an OpenAPI specification 
@@ -41,10 +37,10 @@ endpoints that we should use… please avoid the v1 endpoints). Importantly, you
 to construct a color scale, and lay out the data on the map for the requested Measure Parameter. 
 
 
-# Setup
+## Setup
 Requires json simple 1.1.1
 
-# Usage
+## Usage
 If you wish to execute the stand-alone JAR file, you can download it [HERE.](https://github.com/CorpHackRyan/oracle-take-home/blob/master/out/artifacts/oracle_take_home_jar/oracle-take-home.jar)
 The artifact was built using OpenJDK 18 with language level 11.<br><br>
 The application is broken into two sections - top and bottom. In the top section, you select your parameter, enter in 
@@ -61,7 +57,7 @@ in the status box below it.
 
 
 
-# Output
+## Output
 The main user interface<br>
 <img src="assets/mainScreen.png" alt="Main screen"><br>
 The resulting CSV export file from the API requests<br>
