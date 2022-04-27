@@ -243,14 +243,13 @@ public class Main {
                     throw  new RuntimeException("HTTP Response code: " + response);
                 } else {
                     Scanner sc = new Scanner(url.openStream());
+
                     while(sc.hasNext())
                     {
                         results.append(sc.nextLine());
                     }
 
                     parseJSONData(results.toString());
-                    System.out.println(results);
-
                     sc.close();
                 }
             } catch (Exception ex) {
@@ -260,27 +259,43 @@ public class Main {
         }
 
         public static void parseJSONData(String jsonList) {
-            String value1 = "";
+
             try {
                 JSONParser parser = new JSONParser();
                 JSONObject jsonMaster = (JSONObject) parser.parse(jsonList); // contains meta header, and results header
                 JSONArray parsedResults = (JSONArray) jsonMaster.get("results");
 
                 // Heat map elements extracted from results
-                // date, country, city, coordinates[latitude][longitude], unit, value, parameter, sensorType, location,
-                // entity
-                for (Object header : parsedResults) {
-                    //Store the JSON objects in an array
-                    //Get the index of the JSON object and print the values as per the index
-                    JSONObject jsonObj_1 = (JSONObject) header;
-                    System.out.println("line" + ((JSONObject) header).get("date")); //jsonObj_1 +
-                }
-
-
-
+                // date, country, city, coordinates[latitude][longitude], unit, value, parameter, sensorType, location, entity
                 try (FileWriter file = new FileWriter("openaq_heatmap.csv")) {
 
-                    file.write(jsonMaster.toJSONString());
+                file.write("date" +","+ "country"  + "," + "city" + "," +  "latitude" + "," + "longitude"+ "," +
+                        "unit" + "," + "value"+ "," + "parameter" + "," + "sensortype" + ","  + "location" + "," +
+                        "entity\n");
+
+                for (Object header : parsedResults) {
+
+                    Object date = ((JSONObject) header).get("date");
+                    Object dateUTC = ((JSONObject) date).get("local");
+                    file.write(dateUTC.toString() + ",");
+
+                    System.out.println(((JSONObject) header).get("country"));
+                    System.out.println(((JSONObject) header).get("city"));
+
+                    Object coordinates = ((JSONObject) header).get("coordinates");
+                    Object latitude = ((JSONObject) coordinates).get("latitude");
+                    Object longitude =((JSONObject) coordinates).get("longitude");
+                    file.write(latitude.toString() + ",");
+                    file.write(longitude.toString() + ",");
+
+                    System.out.println(((JSONObject) header).get("unit"));
+                    System.out.println(((JSONObject) header).get("value"));
+                    System.out.println(((JSONObject) header).get("parameter"));
+                    System.out.println(((JSONObject) header).get("sensorType"));
+                    System.out.println(((JSONObject) header).get("location"));
+                    System.out.println(((JSONObject) header).get("entity"));
+                }
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
