@@ -4,18 +4,16 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
-import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
-
 
 
 class SwingGUI {
@@ -98,14 +96,14 @@ class SwingGUI {
             urlText.setText(v2URL + "/measurements?parameter=" +
                     measuredParameter.getSelectedItem() + "&country=" + countryCodeTxt.getText() + "&limit="
                     + limitTxt.getText());
-            Main.retrieveJSON(urlText.getText(), "countryParam");
+            Main.retrieveJSON(urlText.getText());
         });
 
         fetchCoordinatesAndRadius.addActionListener(e -> {
             urlText2.setText(v2URL + "/measurements?limit=" + limit2Txt.getText() + "&parameter="
                             + measuredParameter2.getSelectedItem() + "&coordinates=" + latitudeTxt.getText() + "%2C" +
                             longitudeTxt.getText() + "&radius=" + radiusTxt.getText());
-            Main.retrieveJSON(urlText2.getText(), "coordRadius");
+            Main.retrieveJSON(urlText2.getText());
         });
 
         quit.addActionListener(e -> {
@@ -224,7 +222,7 @@ public class Main {
         return response_code;
     }
 
-    public static void retrieveJSON(String OpenAQUrl, String fetchType) {
+    public static void retrieveJSON(String OpenAQUrl) {
 
         try {
             StringBuilder results = new StringBuilder();
@@ -269,6 +267,7 @@ public class Main {
     }
 
     public static void createCSV(JSONArray resultsParsedArr) {
+
         String utcDate = "", country = "", lat = "", lon = "", unit = "", value = "",
                 parameter = "", sensortype = ""; // add part 2 strings here
         String heatmapFilename = "openaq_heatmap.csv";
@@ -289,13 +288,11 @@ public class Main {
                     utcDate = ((JSONObject) date).get("utc").toString();
                 }
 
-
                 if (((JSONObject) header).get("country") == null) {
                     country = "";
                 } else {
                     country = ((JSONObject) header).get("country").toString();
                 }
-
 
                 Object coordinates = ((JSONObject) header).get("coordinates");
                 Object latitude = ((JSONObject) coordinates).get("latitude");
@@ -311,13 +308,11 @@ public class Main {
                     lon = longitude.toString();
                 }
 
-
                 if (((JSONObject) header).get("unit") == null) {
                     unit = "";
                 } else {
                     unit = (((JSONObject) header).get("unit").toString());
                 }
-
 
                 if (((JSONObject) header).get("parameter") == null) {
                     parameter = "";
@@ -325,13 +320,11 @@ public class Main {
                     parameter = (((JSONObject) header).get("parameter").toString());
                 }
 
-
                 if (((JSONObject) header).get("value") == null) {
                     value = "";
                 } else {
                     value = (((JSONObject) header).get("value").toString());
                 }
-
 
                 if (((JSONObject) header).get("sensorType") == null) {
                     sensortype = "";
@@ -339,13 +332,13 @@ public class Main {
                     sensortype = (((JSONObject) header).get("sensorType").toString());
                 }
 
-
                 file.write(utcDate + "," + country + "," + lat + "," + lon + "," +
                         unit + "," + parameter + "," + value + "," + sensortype + "\n");
 
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException eIO) {
+            JOptionPane.showMessageDialog(null, "An error occurred: \n" + eIO);
+            eIO.printStackTrace();
         }
 
         if (resultsParsedArr.size() == 0) {
@@ -355,7 +348,6 @@ public class Main {
             JOptionPane.showMessageDialog(null, resultsParsedArr.size() +
                     " records found. File location is: \n" + Paths.get(heatmapFilename).toAbsolutePath());
         }
-
     }
 
     public static void main(String[] args) {
