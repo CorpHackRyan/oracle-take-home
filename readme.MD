@@ -42,8 +42,8 @@ Requires json simple 1.1.1
 ## Usage
 If you wish to execute the stand-alone JAR file, you can download it [HERE.](https://github.com/CorpHackRyan/oracle-take-home/blob/master/out/artifacts/oracle_take_home_jar/oracle-take-home.jar)
 The artifact was built using OpenJDK 18 with language level 11.<br><br>
-You can watch a live demonstration screen recording of the application in real time [HERE.](/assets/demonstration.mkv)<br><br>
-![](https://github.com/CorpHackRyan/oracle-take-home/blob/master/assets/demonstration.mkv)
+You can watch a live demonstration screen recording of the application in real time [HERE.](/assets/demonstration.mp4)<br><br>
+![](https://github.com/CorpHackRyan/oracle-take-home/blob/master/assets/demonstration.mp4)
 
 
 The application is broken into two sections - top and bottom. In the top section, you select your parameter, enter in 
