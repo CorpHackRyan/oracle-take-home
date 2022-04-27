@@ -19,8 +19,7 @@ This CSV can then be used by a front-end developer for a consumption into a heat
 Use the OpenAQ-provided API to create a component that provides a heatmap of air quality data in your home country!
 
 OpenAQ (https://openaq.org/) is a free resource that provides, via an OpenAPI specification 
-(https://docs.openaq.org/#/), data points on air quality. Using their data is a good baseline to build from, and a 
-good representation of the kind of work you will be doing on a daily basis working with our teams.
+(https://docs.openaq.org/#/), data points on air quality. 
 
 Build a Java component that takes input and returns a data structure that can be consumed by a front-end team to build 
 a Heat Map visualization of air quality in the given region. Your component should be able to handle the following 
