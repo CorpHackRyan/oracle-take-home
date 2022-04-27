@@ -1,17 +1,23 @@
 # Back-End / Java Take-Home Assessment
+<div style="text-align: center;"><img src="favicon.png"><br></div>
+<div style="text-align: center; font-size: 22px;>
 
 # Table of contents
-* [Overview](#overview)
-* [Scope](#scope)
-* [Setup](#setup)
-* [Usage](#usage)
-* [Output](#output)
+ [Overview](#overview) <br>
+ [Scope](#scope) <br>
+ [Setup](#setup) <br>
+ [Usage](#usage) <br> 
+ [Output](#output)<br>
+
+</div>
+
+
 
 # Overview
-<img src="favicon.png"><br>
-Simple Java app created using the Java Swing frame work that consumes data via an API endpoint from OpenAQ.org and 
-converts that data to a  CSV format. This CSV is to be consumed by a front-end developer for a consumption into a heat 
-map visualization. 
+Simple Java app created using the Java Swing framework for the graphical user interface. This application consumes 
+data via an API endpoint url using the JSON format from OpenAQ.org and converts that data to a CSV format. 
+This CSV can then be used by a front-end developer for a consumption into a heat map visualization.<br>
+<br><a href="https://openaq.org/"><img alt="OpenAQ" src="assets/oaq-logo-col-pos.svg"></a>
 
 # Scope
 Use the OpenAQ-provided API to create a component that provides a heatmap of air quality data in your home country!
@@ -40,6 +46,20 @@ Requires json simple 1.1.1
 
 # Usage
 If you wish to execute the stand-alone JAR file, you can download it [HERE.](https://github.com/CorpHackRyan/oracle-take-home/blob/master/out/artifacts/oracle_take_home_jar/oracle-take-home.jar)
+The artifact was built using OpenJDK 18 with language level 11.<br><br>
+The application is broken into two sections - top and bottom. In the top section, you select your parameter, enter in 
+your 2 digit country code and the total amount of entries to retrieve in the limit per page text box. 
+The bottom section allows you to get a little more granular with your requests, and allows for longitudinal and 
+latitudinal coordinates and a radius. Same as  above, you enter in your total amount of entries to retrieve and 
+the parameter you wish to retrieve.<br><br>
+The fetch data buttons will access its respective inputs (either top or bottom) and if successful, return all values 
+and export them to a local CSV file called "openaq_heatmap.csv". It will be exported to the root directory of the 
+application.<br><br>
+The textbox which contains the API URL is filled in by default for a quick hit.  <br><br>
+The Ping OpenAQ server button will just ping the server to  verify it is up and working, and will respond with a status 
+in the status box below it. 
+
+
 
 # Output
 The main user interface<br>
