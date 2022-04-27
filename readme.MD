@@ -39,8 +39,7 @@ to construct a color scale, and lay out the data on the map for the requested Me
 Requires json simple 1.1.1
 
 # Usage
-If you wish to execute the stand-alone JAR file, you can download it  
-[HERE.](https://github.com/CorpHackRyan/oracle-take-home/blob/master/out/artifacts/oracle_take_home_jar/oracle-take-home.jar)
+If you wish to execute the stand-alone JAR file, you can download it [HERE.](https://github.com/CorpHackRyan/oracle-take-home/blob/master/out/artifacts/oracle_take_home_jar/oracle-take-home.jar)
 
 # Output
 <img src="./mainScreen.png" alt="Main screen">
