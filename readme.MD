@@ -8,8 +8,10 @@
 * [Output](#output)
 
 # Overview
+<img src="favicon.png"><br>
 Simple Java app created using the Java Swing frame work that consumes data via an API endpoint from OpenAQ.org and 
-converts that data to a  CSV format. This CSV is to be consumed by a front-end for a heat map visualization. 
+converts that data to a  CSV format. This CSV is to be consumed by a front-end developer for a consumption into a heat 
+map visualization. 
 
 # Scope
 Use the OpenAQ-provided API to create a component that provides a heatmap of air quality data in your home country!
@@ -23,11 +25,11 @@ a Heat Map visualization of air quality in the given region. Your component shou
 inputs:
 
 ```Two-letter “Country Code” and Measured Parameter (pm25, co, no2, etc.)```
+
 ```Decimal-Degree Coordinates & Radius and Measured Parameter (pm25, co, no2, etc.)```
 
 Based on the provided input, your component should be able to hit the live OpenAQ API and return a data structure 
 that represents all the elements to construct a visual representation of the data in the form of a heatmap. You will 
 likely need to interact with the locations endpoint and / or the measurements' endpoint (note that these are the v2 
 endpoints that we should use… please avoid the v1 endpoints). Importantly, your code should return enough information 
-to construct a color scale, and lay out the data on the map for the requested Measure Parameter. To complete this 
-assessment you will be expected to show:
+to construct a color scale, and lay out the data on the map for the requested Measure Parameter. 
