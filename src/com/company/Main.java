@@ -276,7 +276,7 @@ public class Main {
                 for (Object header : parsedResults) {
 
                     Object date = ((JSONObject) header).get("date");
-                    Object dateUTC = ((JSONObject) date).get("local");
+                    Object dateUTC = ((JSONObject) date).get("utc");
                     file.write(dateUTC.toString() + ",");
 
                     System.out.println(((JSONObject) header).get("country"));
