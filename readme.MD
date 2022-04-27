@@ -42,4 +42,7 @@ Requires json simple 1.1.1
 If you wish to execute the stand-alone JAR file, you can download it [HERE.](https://github.com/CorpHackRyan/oracle-take-home/blob/master/out/artifacts/oracle_take_home_jar/oracle-take-home.jar)
 
 # Output
-<img src="assets/mainScreen.png" alt="Main screen">
+The main user interface<br>
+<img src="assets/mainScreen.png" alt="Main screen"><br>
+The resulting CSV export file from the API requests<br>
+<img src="assets/csv_screen.png"><br>
