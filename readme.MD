@@ -1,10 +1,10 @@
 # Back-End / Java Take-Home Assessment
 
 # Table of contents
-* [Overview](#general-info)
+* [Overview](#overview)
 * [Scope](#scope)
 * [Setup](#setup)
-* [How to use](#how-to-use)
+* [Usage](#usage)
 * [Output](#output)
 
 # Overview
@@ -36,6 +36,9 @@ to construct a color scale, and lay out the data on the map for the requested Me
 
 
 # Setup
+Requires json simple 1.1.1
+
+# Usage
 
 # Output
-<img src="./mainScreen.png">
+<img src="./mainScreen.png" alt="Main screen">
