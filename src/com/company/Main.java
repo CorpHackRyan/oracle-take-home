@@ -4,7 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
+import java.util.Iterator;
 import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
 import java.awt.*;
@@ -41,11 +41,12 @@ class SwingGUI {
         JLabel latitudeLbl = new JLabel("Latitude");
         JLabel longitudeLbl = new JLabel("Longitude");
         JLabel radiusLbl = new JLabel("Radius");
-        JLabel selectParamlbl = new JLabel("Select your parameter");
+        JLabel selectParamLbl = new JLabel("Select your parameter");
+        JLabel limit2Lbl = new JLabel("Enter limit per page (max 100000)");
         JLabel statusLbl = new JLabel("Responses from OpenAQ server...");
-        JLabel openAQimg = new JLabel(new ImageIcon("./favicon.png"));
-        JLabel openAQimg2 = new JLabel(new ImageIcon("./favicon.png"));
-        JLabel openAQimg3 = new JLabel(new ImageIcon("./favicon.png"));
+        JLabel openAQImg = new JLabel(new ImageIcon("./favicon.png"));
+        JLabel openAQImg2 = new JLabel(new ImageIcon("./favicon.png"));
+        JLabel openAQImg3 = new JLabel(new ImageIcon("./favicon.png"));
 
         // Combo boxes
         String[] legalParameters = { "pm25", "pm10", "so2", "no2", "o3", "co", "bc" };
@@ -54,15 +55,18 @@ class SwingGUI {
         measuredParameter2.setSelectedItem("o3");
 
         // Text boxes
-        JTextArea countryCode = new JTextArea("US");
-        countryCode.setFont(new Font("Arial", Font.BOLD, 15));
-        countryCode.setBorder(BorderFactory.createLineBorder(Color.black));
+        JTextArea countryCodeTxt = new JTextArea("US");
+        countryCodeTxt.setFont(new Font("Arial", Font.BOLD, 15));
+        countryCodeTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
         JTextArea limitTxt = new JTextArea("1000");
         limitTxt.setBorder(BorderFactory.createLineBorder(Color.blue));
         limitTxt.setFont(new Font("Arial", Font.BOLD, 15));
+        JTextArea limit2Txt = new JTextArea("1000");
+        limit2Txt.setBorder(BorderFactory.createLineBorder(Color.blue));
+        limit2Txt.setFont(new Font("Arial", Font.BOLD, 15));
 
         JTextArea urlText = new JTextArea(v2URL + "/measurements?parameter=" +
-                measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit="
+                measuredParameter.getSelectedItem() + "&country=" + countryCodeTxt.getText() + "&limit="
                 + limitTxt.getText());
         urlText.setBorder(BorderFactory.createLineBorder(Color.blue));
 
@@ -94,13 +98,13 @@ class SwingGUI {
         // Event listeners
         fetchCountryAndParam.addActionListener(e -> {
             urlText.setText(v2URL + "/measurements?parameter=" +
-                    measuredParameter.getSelectedItem() + "&country=" + countryCode.getText() + "&limit="
+                    measuredParameter.getSelectedItem() + "&country=" + countryCodeTxt.getText() + "&limit="
                     + limitTxt.getText());
             Main.retrieveJSON(urlText.getText());
         });
 
         fetchCoordinatesAndRadius.addActionListener(e -> {
-            urlText2.setText(v2URL + "/measurements?limit=1000&&parameter="
+            urlText2.setText(v2URL + "/measurements?limit=" + limit2Txt.getText() + "&parameter="
                             + measuredParameter2.getSelectedItem() + "&coordinates=" + latitudeTxt.getText() + "%2C" +
                             longitudeTxt.getText() + "&radius=" + radiusTxt.getText());
             Main.retrieveJSON(urlText2.getText());
@@ -135,33 +139,35 @@ class SwingGUI {
 
         measuredParameter.addActionListener(e -> urlText.setText(v2URL + "/measurements?parameter="
                 + measuredParameter.getSelectedItem()
-                + "&country=" + countryCode.getText() + "&limit=" + limitTxt.getText()));
+                + "&country=" + countryCodeTxt.getText() + "&limit=" + limitTxt.getText()));
 
 
         // Placement of all objects
-        openAQimg.setBounds(10, 200, 100, 100);
-        openAQimg2.setBounds(680, 200, 100, 100);
-        openAQimg3.setBounds(350, 200, 100, 100);
+        openAQImg.setBounds(10, 180, 100, 100);
+        openAQImg2.setBounds(680, 180, 100, 100);
+        openAQImg3.setBounds(350, 180, 100, 100);
         directionsParam.setBounds(10, 5, 200, 50);
         countryCodeDesc.setBounds(300, 5, 200, 50);
         limitLbl.setBounds(550, 5, 250, 50);
         statusLbl.setBounds(275, 460, 300, 50);
-        latitudeLbl.setBounds(15, 340, 90, 20);
-        longitudeLbl.setBounds(110, 340, 90, 20);
-        radiusLbl.setBounds(370, 340, 70, 20);
-        selectParamlbl.setBounds(600, 340, 170, 20);
-        measuredParameter.setBounds(40, 50, 100, 30);
-        measuredParameter2.setBounds(630, 360, 100, 30);
-        countryCode.setBounds(375, 50, 35, 30);
-        limitTxt.setBounds(650, 50, 50, 30);
-        urlText.setBounds(10, 110, 780, 20);
+        latitudeLbl.setBounds(15, 310, 90, 20);
+        longitudeLbl.setBounds(110, 310, 90, 20);
+        radiusLbl.setBounds(250, 310, 70, 20);
+        limit2Lbl.setBounds(330, 310, 250, 20);
+        selectParamLbl.setBounds(600, 310, 170, 20);
+        measuredParameter.setBounds(40, 50, 100, 20);
+        measuredParameter2.setBounds(630, 330, 100, 20);
+        countryCodeTxt.setBounds(375, 50, 35, 20);
+        limitTxt.setBounds(650, 50, 50, 20);
+        urlText.setBounds(10, 85, 780, 20);
         statusBar.setBounds(10, 510, 780, 50);
-        latitudeTxt.setBounds(10, 360, 75, 20);
-        longitudeTxt.setBounds(110, 360, 75, 20);
-        radiusTxt.setBounds(370, 360, 50, 20);
-        urlText2.setBounds(10, 395, 780, 35);
-        fetchCountryAndParam.setBounds(300, 150, 200, 25);
-        fetchCoordinatesAndRadius.setBounds(300, 440, 200, 25);
+        latitudeTxt.setBounds(10, 330, 75, 20);
+        longitudeTxt.setBounds(110, 330, 75, 20);
+        radiusTxt.setBounds(250, 330, 50, 20);
+        limit2Txt.setBounds(415, 330, 50, 20);
+        urlText2.setBounds(10, 365, 780, 35);
+        fetchCountryAndParam.setBounds(300, 115, 200, 25);
+        fetchCoordinatesAndRadius.setBounds(300, 410, 200, 25);
         quit.setBounds(590, 475, 200, 25);
         pingServer.setBounds(10, 475, 200, 25);
 
@@ -172,25 +178,27 @@ class SwingGUI {
         frame.getContentPane().add(pingServer);
         frame.getContentPane().add(urlText);
         frame.getContentPane().add(urlText2);
-        frame.getContentPane().add(openAQimg);
-        frame.getContentPane().add(openAQimg2);
-        frame.getContentPane().add(openAQimg3);
+        frame.getContentPane().add(openAQImg);
+        frame.getContentPane().add(openAQImg2);
+        frame.getContentPane().add(openAQImg3);
         frame.getContentPane().add(statusBar);
         frame.getContentPane().add(measuredParameter);
         frame.getContentPane().add(measuredParameter2);
         frame.getContentPane().add(directionsParam);
         frame.getContentPane().add(countryCodeDesc);
-        frame.getContentPane().add(countryCode);
+        frame.getContentPane().add(countryCodeTxt);
         frame.getContentPane().add(statusLbl);
         frame.getContentPane().add(limitTxt);
+        frame.getContentPane().add(limit2Txt);
         frame.getContentPane().add(limitLbl);
+        frame.getContentPane().add(limit2Lbl);
         frame.getContentPane().add(latitudeTxt);
         frame.getContentPane().add(longitudeTxt);
         frame.getContentPane().add(radiusTxt);
         frame.getContentPane().add(latitudeLbl);
         frame.getContentPane().add(longitudeLbl);
         frame.getContentPane().add(radiusLbl);
-        frame.getContentPane().add(selectParamlbl);
+        frame.getContentPane().add(selectParamLbl);
         frame.setVisible(true);
     }
 }
@@ -252,23 +260,28 @@ public class Main {
         }
 
         public static void parseJSONData(String jsonList) {
+            String value1 = "";
             try {
-                JSONParser parse = new JSONParser();
-                JSONObject jobJ = (JSONObject) parse.parse(jsonList);
+                JSONParser parser = new JSONParser();
+                JSONObject jsonMaster = (JSONObject) parser.parse(jsonList); // contains meta header, and results header
+                JSONArray parsedResults = (JSONArray) jsonMaster.get("results");
 
-
-                //convert  JSON obj values into a JSON results array
-                JSONArray jsArr = (JSONArray) jobJ.get("results");
-
-                for (Object o : jsArr) {
+                // Heat map elements extracted from results
+                // date, country, city, coordinates[latitude][longitude], unit, value, parameter, sensorType, location,
+                // entity
+                for (Object header : parsedResults) {
                     //Store the JSON objects in an array
                     //Get the index of the JSON object and print the values as per the index
-                    JSONObject jsonObj_1 = (JSONObject) o;
-                    System.out.println("line" + jsonObj_1); //jsonObj_1 +
+                    JSONObject jsonObj_1 = (JSONObject) header;
+                    System.out.println("line" + ((JSONObject) header).get("date")); //jsonObj_1 +
                 }
 
-                try (FileWriter file = new FileWriter("openaq.json")) {
-                    file.write(jobJ.toJSONString());
+
+
+                try (FileWriter file = new FileWriter("openaq_heatmap.csv")) {
+
+                    file.write(jsonMaster.toJSONString());
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
