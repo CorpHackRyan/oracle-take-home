@@ -5,17 +5,20 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import javax.net.ssl.HttpsURLConnection;
+import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-class SwingGUI {
 
+
+class SwingGUI {
     SwingGUI() {
         JFrame frame = new JFrame("OpenAQ API Fetcher");
         setupWindow(frame);
@@ -90,23 +93,20 @@ class SwingGUI {
         JButton quit = new JButton("Exit");
         JButton pingServer = new JButton("Ping OpenAQ server");
 
-
-
         // Event listeners
         fetchCountryAndParam.addActionListener(e -> {
             urlText.setText(v2URL + "/measurements?parameter=" +
                     measuredParameter.getSelectedItem() + "&country=" + countryCodeTxt.getText() + "&limit="
                     + limitTxt.getText());
-            Main.retrieveJSON(urlText.getText());
+            Main.retrieveJSON(urlText.getText(), "countryParam");
         });
 
         fetchCoordinatesAndRadius.addActionListener(e -> {
             urlText2.setText(v2URL + "/measurements?limit=" + limit2Txt.getText() + "&parameter="
                             + measuredParameter2.getSelectedItem() + "&coordinates=" + latitudeTxt.getText() + "%2C" +
                             longitudeTxt.getText() + "&radius=" + radiusTxt.getText());
-            Main.retrieveJSON(urlText2.getText());
+            Main.retrieveJSON(urlText2.getText(), "coordRadius");
         });
-
 
         quit.addActionListener(e -> {
             // Exit program
@@ -137,7 +137,6 @@ class SwingGUI {
         measuredParameter.addActionListener(e -> urlText.setText(v2URL + "/measurements?parameter="
                 + measuredParameter.getSelectedItem()
                 + "&country=" + countryCodeTxt.getText() + "&limit=" + limitTxt.getText()));
-
 
         // Placement of all objects
         openAQImg.setBounds(10, 180, 100, 100);
@@ -202,110 +201,165 @@ class SwingGUI {
 
 public class Main {
 
-        public static void createGUI() {
-            // creating instance of Frame class
-            SwingGUI mainGUI = new SwingGUI();
+    public static void createGUI() {
+        // creating instance of Frame class
+        SwingGUI mainGUI = new SwingGUI();
+    }
+
+    public static int pingTarget() {
+        String ping_url = "https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/ping";
+        int response_code = 0;
+
+        try {
+            URL url = new URL(ping_url);
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            response_code = conn.getResponseCode();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
-        public static int pingTarget() {
-            String ping_url = "https://u50g7n0cbj.execute-api.us-east-1.amazonaws.com/ping";
-            int response_code = 0;
+        return response_code;
+    }
 
-            try {
-                URL url = new URL(ping_url);
-                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.connect();
-                response_code = conn.getResponseCode();
+    public static void retrieveJSON(String OpenAQUrl, String fetchType) {
 
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        try {
+            StringBuilder results = new StringBuilder();
 
-            return response_code;
-        }
+            URL url = new URL(OpenAQUrl);
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
+            int response = conn.getResponseCode();
 
-        public static void retrieveJSON(String OpenAQUrl) {
+            if (response != 200) {
+                throw new RuntimeException("HTTP Response code: " + response);
+            } else {
+                Scanner sc = new Scanner(url.openStream());
 
-             try {
-                StringBuilder results = new StringBuilder();
-
-                URL url = new URL(OpenAQUrl);
-                HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.connect();
-                int response = conn.getResponseCode();
-
-                if (response != 200) {
-                    throw  new RuntimeException("HTTP Response code: " + response);
-                } else {
-                    Scanner sc = new Scanner(url.openStream());
-
-                    while(sc.hasNext())
-                    {
-                        results.append(sc.nextLine());
-                    }
-
-                    parseJSONData(results.toString());
-                    sc.close();
-                }
-            } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "An error occurred: \n" + ex);
-
-            }
-        }
-
-        public static void parseJSONData(String jsonList) {
-
-            try {
-                JSONParser parser = new JSONParser();
-                JSONObject jsonMaster = (JSONObject) parser.parse(jsonList); // contains meta header, and results header
-                JSONArray parsedResults = (JSONArray) jsonMaster.get("results");
-
-                // Heat map elements extracted from results
-                // date, country, city, coordinates[latitude][longitude], unit, value, parameter, sensorType, location, entity
-                try (FileWriter file = new FileWriter("./openaq_heatmap.csv")) {
-
-                // CSV header
-                file.write("date" +","+ "country"  + "," + "city" + "," +  "latitude" + "," + "longitude"+ "," +
-                        "unit" + "," + "value"+ "," + "parameter" + "," + "sensortype" + ","  + "location" + "," +
-                        "entity\n");
-
-                // CSV data parsed from JSON
-                for (Object header : parsedResults) {
-
-                    Object date = ((JSONObject) header).get("date");
-                    Object dateUTC = ((JSONObject) date).get("utc");
-                    file.write(dateUTC.toString() + ",");
-
-                    System.out.println(((JSONObject) header).get("country"));
-                    System.out.println(((JSONObject) header).get("city"));
-
-                    Object coordinates = ((JSONObject) header).get("coordinates");
-                    Object latitude = ((JSONObject) coordinates).get("latitude");
-                    Object longitude =((JSONObject) coordinates).get("longitude");
-                    file.write(latitude.toString() + ",");
-                    file.write(longitude.toString() + ",");
-
-                    System.out.println(((JSONObject) header).get("unit"));
-                    System.out.println(((JSONObject) header).get("value"));
-                    System.out.println(((JSONObject) header).get("parameter"));
-                    System.out.println(((JSONObject) header).get("sensorType"));
-                    System.out.println(((JSONObject) header).get("location"));
-                    System.out.println(((JSONObject) header).get("entity"));
+                while (sc.hasNext()) {
+                    results.append(sc.nextLine());
                 }
 
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                
-            } catch (ParseException pe) {
-                pe.printStackTrace();
+                parseJSONData(results.toString());
+                sc.close();
             }
-        }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "An error occurred: \n" + ex);
 
-        public static void main(String[] args) {
-            createGUI();
         }
     }
+
+    public static void parseJSONData(String jsonList) {
+
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject jsonMaster = (JSONObject) parser.parse(jsonList); // contains meta header, and results header
+            JSONArray parsedResults = (JSONArray) jsonMaster.get("results");
+
+            createCSV(parsedResults);
+
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(null, "An error occurred: \n" + e);
+            e.printStackTrace();
+        }
+    }
+
+    public static void createCSV(JSONArray resultsParsedArr) {
+        String utcDate = "", country = "", lat = "", lon = "", unit = "", value = "",
+                parameter = "", sensortype = ""; // add part 2 strings here
+        String heatmapFilename = "openaq_heatmap.csv";
+
+        try (FileWriter file = new FileWriter(heatmapFilename)) {
+
+            // Write CSV Header
+            file.write("date_UTC" + "," + "country" + "," + "latitude" + "," + "longitude" + "," + "unit" + "," +
+                    "parameter" + "," + "value" + "," + "sensortype\n");
+
+            // Data parsed out of JSON Array to export to CSV
+            for (Object header : resultsParsedArr) {
+
+                Object date = ((JSONObject) header).get("date");
+                if (((JSONObject) date).get("utc") == null) {
+                    utcDate = "";
+                } else {
+                    utcDate = ((JSONObject) date).get("utc").toString();
+                }
+
+
+                if (((JSONObject) header).get("country") == null) {
+                    country = "";
+                } else {
+                    country = ((JSONObject) header).get("country").toString();
+                }
+
+
+                Object coordinates = ((JSONObject) header).get("coordinates");
+                Object latitude = ((JSONObject) coordinates).get("latitude");
+                Object longitude = ((JSONObject) coordinates).get("longitude");
+                if (latitude.toString() == null) {
+                    lat = "";
+                } else {
+                    lat = latitude.toString();
+                }
+                if (longitude.toString() == null) {
+                    lon = "";
+                } else {
+                    lon = longitude.toString();
+                }
+
+
+                if (((JSONObject) header).get("unit") == null) {
+                    unit = "";
+                } else {
+                    unit = (((JSONObject) header).get("unit").toString());
+                }
+
+
+                if (((JSONObject) header).get("parameter") == null) {
+                    parameter = "";
+                } else {
+                    parameter = (((JSONObject) header).get("parameter").toString());
+                }
+
+
+                if (((JSONObject) header).get("value") == null) {
+                    value = "";
+                } else {
+                    value = (((JSONObject) header).get("value").toString());
+                }
+
+
+                if (((JSONObject) header).get("sensorType") == null) {
+                    sensortype = "";
+                } else {
+                    sensortype = (((JSONObject) header).get("sensorType").toString());
+                }
+
+
+                file.write(utcDate + "," + country + "," + lat + "," + lon + "," +
+                        unit + "," + parameter + "," + value + "," + sensortype + "\n");
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (resultsParsedArr.size() == 0) {
+            JOptionPane.showMessageDialog(null, "No records were found");
+        } else {
+
+            JOptionPane.showMessageDialog(null, resultsParsedArr.size() +
+                    " records found. File location is: \n" + Paths.get(heatmapFilename).toAbsolutePath());
+        }
+
+    }
+
+    public static void main(String[] args) {
+        createGUI();
+    }
+}
+
