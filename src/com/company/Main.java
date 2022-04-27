@@ -4,12 +4,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import java.util.Iterator;
 import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -267,12 +264,14 @@ public class Main {
 
                 // Heat map elements extracted from results
                 // date, country, city, coordinates[latitude][longitude], unit, value, parameter, sensorType, location, entity
-                try (FileWriter file = new FileWriter("openaq_heatmap.csv")) {
+                try (FileWriter file = new FileWriter("./openaq_heatmap.csv")) {
 
+                // CSV header
                 file.write("date" +","+ "country"  + "," + "city" + "," +  "latitude" + "," + "longitude"+ "," +
                         "unit" + "," + "value"+ "," + "parameter" + "," + "sensortype" + ","  + "location" + "," +
                         "entity\n");
 
+                // CSV data parsed from JSON
                 for (Object header : parsedResults) {
 
                     Object date = ((JSONObject) header).get("date");

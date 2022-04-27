@@ -33,3 +33,6 @@ that represents all the elements to construct a visual representation of the dat
 likely need to interact with the locations endpoint and / or the measurements' endpoint (note that these are the v2 
 endpoints that we should use… please avoid the v1 endpoints). Importantly, your code should return enough information 
 to construct a color scale, and lay out the data on the map for the requested Measure Parameter. 
+
+
+# Setup
