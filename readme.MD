@@ -7,6 +7,7 @@
 * [Setup](#setup)
 * [Usage](#usage)
 * [Output](#output)
+* [5/23/22 - ORACLES FINAL REVIEW](#my-grade)
 
 
 
@@ -63,3 +64,35 @@ The main user interface<br>
 <img src="assets/mainScreen.png" alt="Main screen"><br>
 The resulting CSV export file from the API requests<br>
 <img src="assets/csv_screen.png"><br>
+
+## MY GRADE
+### Positives
+- GUI that was built was nice.  This is a nice and quick way for a user with little to no
+  knowledge of using an API to use it.  All parameters that can be changed are in edit boxes so the
+  user does not have to know how to manipulate the API request.
+- I like the Ping button.  This is a nice 'health check' of the API.
+- The CSV is well formed and I feel any front end engineer would be able to very easily consume
+  this file and know what all the fields are.
+- The demo and screenshots were a nice piece of supporting documentation (I really liked the
+  added background music of the video)
+- Java coding seems good.  Good choices were made with existing libraries (JSON, Http, ect.)
+
+### Areas of Growth (negatives)
+- No test… no integration, unit, or UI tests.  No tests at all.
+- Getting 500 errors when trying to use Fetch Data button by US Country.  The Fetch Data
+  button works without issues on startup for the lat/long API.  I would expect the Country API to
+  work as well on startup of the application.
+- Bug in the limit of records.  When limiting to 10 records, result is getting back 11 records.  Also
+  in the demo, 50 records were requested, but 88 were returned.
+- Mono class.  UI, main, and all other logic are all in a single class.  It is difficult to follow code
+  doing different things all in the same file.The lack of tests was really a big miss.  Especially since there were some bugs that I found as
+  well as during the video demo that could easily have been covered through proper testing.
+
+## Actual feedback after review
+
+<b>me</b>: Do you think I'm entry level ready as a software developer based on what you reviewed?
+I'm sure you had numerous applicants, if tests were included, this would have perhaps stood a chance? or was I fairly close?
+
+<b>oracle</b>: I think you've shown enough to be a junior engineer. I think depending on the company and/or need at the moment, you could be a good fit
+We're just looking for a little more polishing in the candidates for this last junior opening we have in a while
+
